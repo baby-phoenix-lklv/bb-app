@@ -1,7 +1,11 @@
 name: GitHub Actions Demo
 on:
   push:
+<<<<<<< HEAD
     branches: [MVP2]
+=======
+#     branches: [ MVP2 ]
+>>>>>>> 4500c602b0b1eff5ed8a1db6f1b5418ecf3c673f
 jobs:
   Build:
     runs-on: ubuntu-latest

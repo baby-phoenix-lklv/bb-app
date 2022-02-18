@@ -2,7 +2,7 @@ name: GitHub Actions Demo
 
 on:
   push:
-    branches: [ MVP2 ]
+#     branches: [ MVP2 ]
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest

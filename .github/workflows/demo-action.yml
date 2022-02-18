@@ -37,8 +37,7 @@ jobs:
             louiskimlevu/bbphoenix-app
           # generate Docker tags based on the following events/attributes
           tags: |
-            type=sha,prefix={{branch}}-
-            type=raw,value=mytag-{{branch}}-{{sha}}     
+            type=raw,value={{branch}}-{{sha}}     
       - 
         name: Build and push
         uses: docker/build-push-action@v2

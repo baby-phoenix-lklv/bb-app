@@ -28,13 +28,12 @@ jobs:
         run: |
           substring=$(echo ${{github.repository}} | cut -d '/' -f2)
           echo "::set-output name=reponame::$substring"
-      - run: echo "${{steps.get-id.outputs.id}}"
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v3
         with:
           images: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{steps.get-reponame.outputs.substring}}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{steps.get-reponame.outputs.reponame}}
           tags: |
             type=raw,value={{branch}}-{{sha}}
       - name: Build and push

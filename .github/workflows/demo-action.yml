@@ -24,12 +24,17 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_GITHUB_TOKEN_BBPHOENIX }}
+      - id: get-reponame
+        run: |
+          substring=$(echo ${{github.repository}} | cut -d '/' -f2)
+          echo "::set-output name=reponame::$substring"
+      - run: echo "${{steps.get-id.outputs.id}}"
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v3
         with:
           images: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{github.repository}}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{steps.get-reponame.outputs.substring}}
           tags: |
             type=raw,value={{branch}}-{{sha}}
       - name: Build and push

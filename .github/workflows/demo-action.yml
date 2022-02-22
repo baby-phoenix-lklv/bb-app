@@ -1,7 +1,5 @@
 name: GitHub Actions Demo
-on:
-  push:
-    branches: [MVP2]
+on: push
 jobs:
   Test-App:
     runs-on: ubuntu-latest
@@ -18,17 +16,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: Test-App
     steps:
-      - 
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      - 
-        name: Login to DockerHub
+      - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_GITHUB_TOKEN_BBPHOENIX }}
-      -
-        name: Docker meta
+      - name: Docker meta
         id: meta
         uses: docker/metadata-action@v3
         with:
@@ -37,10 +32,18 @@ jobs:
             louiskimlevu/bbphoenix-app
           # generate Docker tags based on the following events/attributes
           tags: |
-            type=raw,value={{branch}}-{{sha}}     
-      - 
-        name: Build and push
+            type=raw,value={{branch}}-{{sha}}
+      - name: Build and push
+        id: build
         uses: docker/build-push-action@v2
         with:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
+    outputs:
+      digest: ${{ steps.push.outputs.digest }}
+  Echo-digest:
+    runs-on: ubuntu-latest
+    needs: Build-and-Push
+    steps:
+      - name: echo digest
+        run: echo ${{needs.Build-and-Push.outputs.digest}}

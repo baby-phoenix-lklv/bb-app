@@ -25,17 +25,16 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_GITHUB_TOKEN_BBPHOENIX }}
       # Retrieve just repo name without the org
-      # - id: get-repo-name
-      #   run: |
-      #     substring=$(echo ${{  github.repository  }} | cut -d '/' -f2)
-      #     echo "::set-output name=repo_name::$substring"
-      - run: echo "${{github.repository}}"
+      - id: get-repo-name
+        run: |
+          substring=$(echo ${{  github.repository  }} | cut -d '/' -f2)
+          echo "::set-output name=repo_name::$substring"
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v3
         with:
           images: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{  github.repository.name  }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{  steps.get-repo-name.outputs.repo_name  }}
           tags: |
             type=raw,value={{branch}}-{{sha}}
       - name: Build and push
@@ -45,5 +44,5 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-          cache-from: type=registry,ref=${{  secrets.DOCKERHUB_USERNAME  }}/${{  github.repository.name  }}:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{  github.repository.name  }}:buildcache,mode=max
+          cache-from: type=registry,ref=${{  secrets.DOCKERHUB_USERNAME  }}/${{  steps.get-repo-name.outputs.repo_name  }}:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{  steps.get-repo-name.outputs.repo_name  }}:buildcache,mode=max

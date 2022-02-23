@@ -33,7 +33,7 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{  steps.get-repo-name.outputs.repo-name  }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{  steps.get-repo-name.outputs.repo_name  }}
           tags: |
             type=raw,value={{branch}}-{{sha}}
       - name: Build and push

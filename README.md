@@ -28,7 +28,7 @@ curl localhost:5000
 
 ```
 // Create bb-app repository in Dockerhub
-docker tag bb-app louiskimlevu/bb-app:v1
+docker tag bb-app louiskimlevu/bb-app:v3
 sudo docker login -u louiskimlevu --password-stdin
-docker push louiskimlevu/bbphoenix/bb-app:v1
+docker push louiskimlevu/bbphoenix/bb-app:v3
 ```
